@@ -52,19 +52,23 @@ def load_used_map(filename):
             json.dump({}, f,)
             return {}
 
+def get_words_only(n=5):
+    word_map = load_vocabs('data/vocab-list.txt')
+    used_map = load_used_map('data/used-map.json')
+    wmap, used_map = get_todays_words(word_map, used_map, n=5)
+    save_used_map('data/used-map.json', used_map)
+    return wmap
+
 def save_used_map(filename, used_map):
     filename = get_abs_path(filename)
     with open(filename, 'w') as f:
         json.dump(used_map, f, indent=4)
 
 def main():
-    word_map = load_vocabs('data/vocab-list.txt')
-    used_map = load_used_map('data/used-map.json')
-    wmap, used_map = get_todays_words(word_map, used_map, n=5)
-    save_used_map('data/used-map.json', used_map)
     print('-'*100)
     print("Words for Today")
     print('-'*100)
+    wmap = get_words_only(n=5)
     for word in wmap:
         print("{} ::: {}".format(word, wmap[word]))
     print('-'*100)
